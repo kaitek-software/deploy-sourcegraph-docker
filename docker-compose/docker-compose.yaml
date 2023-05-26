@@ -1,4 +1,5 @@
 version: '2.4'
+# name: sourcegraph
 services:
   # Description: This container will migrate the Postgres `frontend`,
   # `codeintel`, and `codeinsights` databases
@@ -475,8 +476,8 @@ services:
     volumes:
       - 'prometheus-v2:/prometheus'
       - '../prometheus:/sg_prometheus_add_ons'
-    ports:
-      - '0.0.0.0:9090:9090'
+    # ports:
+    #   - '0.0.0.0:9090:9090'
     networks:
       - sourcegraph
     restart: always

@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  caddy:
+    ports:
+      - '0.0.0.0:6500:80'
+      - '0.0.0.0:6501:443'
+  sourcegraph-frontend-0:
+    environment:
+      - 'PROMETHEUS_URL=http://prometheus:6502'
+  sourcegraph-frontend-internal:
+    environment:
+      - 'PROMETHEUS_URL=http://prometheus:6502'
+  prometheus:
+    ports:
+      - '0.0.0.0:6502:9090'
+  executor:
+    environment:
+      # Choose what work to process
+      - EXECUTOR_QUEUE_NAME=codeintel
+      - EXECUTOR_FRONTEND_PASSWORD=Z9yq3jGDX*qVNi$#riufKjysLZo@aLmT
+    depends_on:
+      sourcegraph-frontend-0:
+        condition: service_healthy
+  jaeger:
+    environment:
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://prometheus:6502
